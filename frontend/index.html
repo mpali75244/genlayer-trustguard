@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrustGuard — GenLayer Claim Verification</title>
+  <style>
+    body{font-family:Inter,system-ui,sans-serif;max-width:900px;margin:0 auto;padding:48px 20px;background:#0b1020;color:#eef2ff}
+    .card{background:#151c31;border:1px solid #2a3555;border-radius:18px;padding:24px;margin-top:20px}
+    input,textarea{width:100%;box-sizing:border-box;background:#0d1427;color:#fff;border:1px solid #34415f;border-radius:10px;padding:12px;margin:8px 0 16px}
+    textarea{min-height:120px;resize:vertical}button{background:#7c5cff;color:white;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+    .status{margin-top:18px;padding:14px;border-radius:10px;background:#0d1427;white-space:pre-wrap}.muted{color:#aeb9d4}.score{font-size:42px;font-weight:800}
+  </style>
+</head>
+<body>
+  <h1>TrustGuard</h1>
+  <p class="muted">Trust-minimized verification of web claims using GenLayer consensus.</p>
+  <div class="card">
+    <label>Authoritative source URL</label>
+    <input id="url" placeholder="https://example.com/announcement" />
+    <label>Claim to verify</label>
+    <textarea id="claim" placeholder="Example: The project announced a mainnet launch on..." ></textarea>
+    <button id="verify">Verify claim</button>
+    <div id="status" class="status">Ready.</div>
+  </div>
+  <div class="card"><h2>How it works</h2><p class="muted">The browser submits a transaction to a GenLayer Intelligent Contract. The contract fetches the live page, extracts evidence, and uses independent validator checks before recording the consensus result on-chain.</p></div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
