@@ -17,13 +17,9 @@ Important announcements and claims are often copied, paraphrased, or presented w
 7. Only the consensus-approved leader result is written to persistent contract state.
 8. The frontend waits for acceptance, checks the execution result, and reads the recorded result back from the contract.
 
-This follows GenLayer's leader/validator Equivalence Principle rather than trusting the leader's JSON shape alone. citeturn1search0turn1search2
-
 ## Why GenLayer is central
 
 The application's primary trust decision depends on non-deterministic web access and independent validator agreement. The Intelligent Contract performs the live evidence retrieval, analysis, consensus validation, and on-chain state transition. The frontend is an interface to that workflow, not a replacement for it.
-
-GenLayer's web-access model allows Intelligent Contracts to fetch and render external web content, while validators independently execute non-deterministic operations to reach consensus. citeturn0search0turn0search1
 
 ## Repository
 
@@ -42,11 +38,11 @@ VITE_TRUSTGUARD_CONTRACT=0xYourContractAddress npm run dev
 
 For a persistent local setup, put the variable in `frontend/.env.local`.
 
-The current frontend is configured for GenLayer Studio (`studionet`). Before a public testnet demo, switch the chain configuration to the target deployed network and contract address. GenLayerJS supports transaction submission and waiting for accepted/finalized receipts. citeturn0search11turn0search14
+The current frontend is configured for GenLayer Studio (`studionet`). Before a public testnet demo, switch the chain configuration to the target deployed network and contract address.
 
 ## Development and validation
 
-Use GenLayer Studio or GLSim for local development, then validate the exact contract against the target testnet before submission. GenLayer documents Studio as the full GenVM/consensus environment and Bradbury as the realistic testnet environment. citeturn0search7
+Use GenLayer Studio or GLSim for local development, then validate the exact contract against the target testnet before submission.
 
 The repository intentionally does **not** claim a live deployment until the contract has been deployed and a real transaction has been verified.
 
@@ -61,8 +57,6 @@ The repository intentionally does **not** claim a live deployment until the cont
 - Confidence scores use a bounded tolerance because LLM scoring can vary slightly.
 - Contract state is updated only after consensus returns an accepted result.
 - Frontend checks the transaction execution result before trusting the stored result.
-
-GenLayer's documentation specifically warns that schema-only validation does not constitute meaningful consensus; independent verification of the leader result is required. citeturn1search0turn1search3
 
 ## Limitations
 
