@@ -1,11 +1,16 @@
 import { createClient } from 'genlayer-js';
-import { studionet } from 'genlayer-js/chains';
+import { testnetBradbury } from 'genlayer-js/chains';
 import { TransactionStatus } from 'genlayer-js/types';
 
 const CONTRACT_ADDRESS = import.meta.env.VITE_TRUSTGUARD_CONTRACT;
 const statusEl = document.querySelector('#status');
 const resultEl = document.querySelector('#result');
 const button = document.querySelector('#verify');
+const networkEl = document.querySelector('#network');
+const contractEl = document.querySelector('#contract');
+
+if (networkEl) networkEl.textContent = 'GenLayer Testnet Bradbury';
+if (contractEl) contractEl.textContent = CONTRACT_ADDRESS || 'Not configured';
 
 function setStatus(text) {
   statusEl.textContent = text;
@@ -19,7 +24,7 @@ button.addEventListener('click', async () => {
   const url = document.querySelector('#url').value.trim();
   const claim = document.querySelector('#claim').value.trim();
 
-  if (!CONTRACT_ADDRESS) return setStatus('Set VITE_TRUSTGUARD_CONTRACT to the deployed contract address.');
+  if (!CONTRACT_ADDRESS) return setStatus('Contract address is not configured. Set VITE_TRUSTGUARD_CONTRACT.');
   if (!url.startsWith('https://')) return setStatus('Only HTTPS URLs are accepted.');
   if (claim.length < 10 || claim.length > 1000) return setStatus('Claim must contain 10–1000 characters.');
 
@@ -32,10 +37,15 @@ button.addEventListener('click', async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     if (!accounts?.[0]) throw new Error('No wallet account was returned.');
 
-    const client = createClient({ chain: studionet, account: accounts[0] });
-    await client.connect('studionet');
+    const client = createClient({
+      chain: testnetBradbury,
+      account: accounts[0],
+      provider: window.ethereum,
+    });
 
-    setStatus('1/4 Wallet connected. Submit the verification transaction in your wallet...');
+    await client.connect('testnetBradbury');
+
+    setStatus('1/4 Wallet connected to Bradbury. Submit the verification transaction in your wallet...');
     const txHash = await client.writeContract({
       address: CONTRACT_ADDRESS,
       functionName: 'verify_claim',
@@ -49,7 +59,7 @@ button.addEventListener('click', async () => {
       hash: txHash,
       status: TransactionStatus.ACCEPTED,
       interval: 5000,
-      retries: 60,
+      retries: 120,
     });
 
     if (receipt.txExecutionResultName && receipt.txExecutionResultName !== 'FINISHED_WITH_RETURN') {
