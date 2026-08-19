@@ -9,13 +9,13 @@ Important announcements and claims are often copied, paraphrased, or presented w
 ## Core workflow
 
 1. The user submits an HTTPS source URL and a claim.
-2. The frontend connects a browser wallet and sends `verify_claim(url, claim)` through GenLayerJS.
+2. The deployed frontend connects a browser wallet and sends `verify_claim(url, claim)` through GenLayerJS.
 3. The Intelligent Contract renders the live page in a non-deterministic block.
 4. The leader extracts a structured decision: `SUPPORTED`, `NOT_SUPPORTED`, or `INCONCLUSIVE`, plus a confidence score and evidence reason.
 5. Each validator independently reruns the evidence analysis against the same live source.
 6. Consensus requires the discrete status to match exactly and the confidence scores to remain within a bounded tolerance.
 7. Only the consensus-approved leader result is written to persistent contract state.
-8. The frontend waits for acceptance, checks the execution result, and reads the recorded result back from the contract.
+8. The frontend waits for transaction acceptance, checks the execution result, and reads the recorded result back from the contract.
 
 ## Why GenLayer is central
 
@@ -24,8 +24,8 @@ The application's primary trust decision depends on non-deterministic web access
 ## Repository
 
 - `contracts/trust_guard.py` — Intelligent Contract and consensus logic
-- `frontend/index.html` — dApp UI
-- `frontend/src/main.js` — wallet, transaction lifecycle, execution-result handling, and state readback
+- `frontend/index.html` — deployed dApp UI
+- `frontend/src/main.js` — wallet, Bradbury network connection, transaction lifecycle, execution-result handling, and state readback
 - `frontend/package.json` — Vite + GenLayerJS dependencies
 
 ## Run the frontend
@@ -33,18 +33,29 @@ The application's primary trust decision depends on non-deterministic web access
 ```bash
 cd frontend
 npm install
-VITE_TRUSTGUARD_CONTRACT=0xYourContractAddress npm run dev
+VITE_TRUSTGUARD_CONTRACT=0xYourBradburyContractAddress npm run dev
 ```
 
-For a persistent local setup, put the variable in `frontend/.env.local`.
+For a persistent local setup, create `frontend/.env.local` with:
 
-The current frontend is configured for GenLayer Studio (`studionet`). Before a public testnet demo, switch the chain configuration to the target deployed network and contract address.
+```text
+VITE_TRUSTGUARD_CONTRACT=0xYourBradburyContractAddress
+```
 
-## Development and validation
+The frontend is configured for **GenLayer Testnet Bradbury**, the production-like testnet with real AI/LLM workloads. The contract address must be the TrustGuard contract actually deployed on Bradbury; the previous Studionet address must not be reused as a Bradbury deployment address.
 
-Use GenLayer Studio or GLSim for local development, then validate the exact contract against the target testnet before submission.
+## Testnet validation checklist
 
-The repository intentionally does **not** claim a live deployment until the contract has been deployed and a real transaction has been verified.
+Before the Builder Project resubmission, verify all of the following:
+
+1. TrustGuard is deployed on Testnet Bradbury.
+2. `VITE_TRUSTGUARD_CONTRACT` points to that Bradbury deployment.
+3. The public frontend is deployed to a hosting platform such as Vercel or Cloudflare Pages.
+4. A browser wallet can switch to/connect to Bradbury.
+5. A real `verify_claim` transaction is submitted from the deployed frontend.
+6. The transaction reaches GenLayer consensus and finishes successfully.
+7. `get_last_result` returns the stored result from the deployed contract.
+8. The live URL, GitHub repository, and Bradbury contract address are included as submission evidence.
 
 ## Security design
 
@@ -64,10 +75,4 @@ TrustGuard verifies whether a supplied source provides evidence supporting a cla
 
 ## Builder readiness
 
-The repository contains the core application, Intelligent Contract, frontend transaction lifecycle, and documentation. **Final Builder submission should only be made after:**
-
-- contract lint/test passes in the current GenLayer runtime;
-- deployment succeeds on the target GenLayer testnet;
-- a real verification transaction reaches consensus;
-- the frontend successfully reads the resulting on-chain state;
-- the deployed contract address and live demo are added to the submission evidence.
+The Project submission is ready only after the Bradbury deployment, a successful real verification transaction, and a public live frontend have all been verified. Do not submit the old Studionet-only deployment as a Projects submission.
