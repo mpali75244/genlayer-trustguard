@@ -9,12 +9,18 @@
     .card{background:#151c31;border:1px solid #2a3555;border-radius:18px;padding:24px;margin-top:20px}
     input,textarea{width:100%;box-sizing:border-box;background:#0d1427;color:#fff;border:1px solid #34415f;border-radius:10px;padding:12px;margin:8px 0 16px}
     textarea{min-height:120px;resize:vertical}button{background:#7c5cff;color:white;border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
-    .status,.result{margin-top:18px;padding:14px;border-radius:10px;background:#0d1427;white-space:pre-wrap;overflow:auto}.muted{color:#aeb9d4}
+    .status,.result{margin-top:18px;padding:14px;border-radius:10px;background:#0d1427;white-space:pre-wrap;overflow:auto}.muted{color:#aeb9d4}.meta{display:grid;gap:8px;font-size:14px}.meta code{color:#dfe6ff;word-break:break-all}
   </style>
 </head>
 <body>
   <h1>TrustGuard</h1>
   <p class="muted">Trust-minimized verification of web claims using GenLayer consensus.</p>
+  <div class="card">
+    <div class="meta">
+      <div>Network: <strong id="network">Loading…</strong></div>
+      <div>Contract: <code id="contract">Loading…</code></div>
+    </div>
+  </div>
   <div class="card">
     <label for="url">Authoritative source URL</label>
     <input id="url" type="url" autocomplete="off" placeholder="https://example.com/announcement" />
@@ -27,7 +33,7 @@
     <h2>Consensus result</h2>
     <pre id="result" class="result">No verification yet.</pre>
   </div>
-  <div class="card"><h2>How it works</h2><p class="muted">The browser submits a transaction to a GenLayer Intelligent Contract. The contract fetches the live page, produces a structured evidence judgment, independently reruns that judgment on validators, and records only the consensus-approved result on-chain.</p></div>
+  <div class="card"><h2>How it works</h2><p class="muted">The browser submits a transaction to a GenLayer Intelligent Contract. The contract fetches the live page, produces a structured evidence judgment, independently reruns that judgment on validators, and records only the consensus-approved result on-chain. The frontend waits for transaction acceptance and reads the resulting state back from the contract.</p></div>
   <script type="module" src="./src/main.js"></script>
 </body>
 </html>
