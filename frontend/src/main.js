@@ -9,7 +9,7 @@ const button = document.querySelector('#verify');
 const networkEl = document.querySelector('#network');
 const contractEl = document.querySelector('#contract');
 
-const BRADBURY_CHAIN_ID = '0x107d'; // 4221
+const BRADBURY_CHAIN_ID = '0x107d';
 const BRADBURY_RPC_URL = 'https://rpc-bradbury.genlayer.com';
 const BRADBURY_CHAIN_NAME = 'GenLayer Testnet Bradbury';
 
@@ -21,11 +21,10 @@ function setStatus(text) {
 }
 
 function showResult(value) {
-  if (resultEl) {
-    resultEl.textContent = typeof value === 'string'
-      ? value
-      : JSON.stringify(value, null, 2);
-  }
+  if (!resultEl) return;
+  resultEl.textContent = typeof value === 'string'
+    ? value
+    : JSON.stringify(value, null, 2);
 }
 
 async function ensureBradbury(ethereum) {
@@ -41,7 +40,6 @@ async function ensureBradbury(ethereum) {
       params: [{ chainId: BRADBURY_CHAIN_ID }],
     });
   } catch (error) {
-    // 0x4902 means the chain is not present in the wallet.
     if (error?.code !== 4902) throw error;
 
     await ethereum.request({
@@ -70,6 +68,11 @@ async function getWalletAccount(ethereum) {
   if (!accounts?.[0]) throw new Error('No wallet account was returned.');
   return accounts[0];
 }
+
+// Read client: no wallet/provider, uses GenLayer Bradbury directly.
+const readClient = createClient({
+  chain: testnetBradbury,
+});
 
 button.addEventListener('click', async () => {
   const url = document.querySelector('#url').value.trim();
@@ -103,26 +106,20 @@ button.addEventListener('click', async () => {
 
     setStatus('Connecting wallet...');
     const account = await getWalletAccount(ethereum);
-
     await ensureBradbury(ethereum);
 
     setStatus('Wallet connected to Bradbury. Preparing verification transaction...');
 
-    // The wallet provider is used only for signing/sending transactions.
-    // GenLayerJS is configured for Bradbury so contract reads and receipt polling
-    // use the GenLayer network rather than an arbitrary wallet RPC.
-    const client = createClient({
+    // Write client: wallet/provider is used only for signing and sending.
+    const writeClient = createClient({
       chain: testnetBradbury,
       account,
       provider: ethereum,
     });
 
-    // Keep the SDK's network configuration synchronized with the wallet.
-    await client.connect('testnetBradbury');
-
     setStatus('Submit the verification transaction in your wallet...');
 
-    const txHash = await client.writeContract({
+    const txHash = await writeClient.writeContract({
       address: CONTRACT_ADDRESS,
       functionName: 'verify_claim',
       args: [url, claim],
@@ -131,7 +128,7 @@ button.addEventListener('click', async () => {
 
     setStatus(`2/4 Transaction submitted.\n${txHash}\n\nWaiting for GenLayer consensus...`);
 
-    const receipt = await client.waitForTransactionReceipt({
+    const receipt = await readClient.waitForTransactionReceipt({
       hash: txHash,
       status: TransactionStatus.ACCEPTED,
       interval: 5000,
@@ -149,7 +146,7 @@ button.addEventListener('click', async () => {
 
     setStatus('3/4 Consensus accepted. Reading the recorded on-chain result...');
 
-    const stored = await client.readContract({
+    const stored = await readClient.readContract({
       address: CONTRACT_ADDRESS,
       functionName: 'get_last_result',
       args: [],
