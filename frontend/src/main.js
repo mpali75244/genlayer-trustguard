@@ -130,7 +130,7 @@ button.addEventListener('click', async () => {
     const writeClient = createClient({
       chain: testnetBradbury,
       account,
-      provider: ethereum,
+      provider: bumpTransactionGas(ethereum),
     });
 
     setStatus('Submit the verification transaction in your wallet...');
