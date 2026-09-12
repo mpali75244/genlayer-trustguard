@@ -135,6 +135,19 @@ button.addEventListener('click', async () => {
       retries: 120,
     });
 
+    const consensusStatus = receipt.statusName ?? receipt.status_name;
+
+    if (
+      consensusStatus === 'UNDETERMINED' ||
+      consensusStatus === 'CANCELED' ||
+      consensusStatus === 'VALIDATORS_TIMEOUT' ||
+      consensusStatus === 'LEADER_TIMEOUT'
+    ) {
+      throw new Error(
+        `Consensus ended as ${consensusStatus} — no majority was reached, so the result was not recorded. Try a source that responds uniformly to all validators (avoid redirecting or bot-protected URLs).`
+      );
+    }
+
     if (
       receipt.txExecutionResultName &&
       receipt.txExecutionResultName !== 'FINISHED_WITH_RETURN'
