@@ -32,7 +32,9 @@ class TrustGuard(gl.Contract):
 
         def analyze_source():
             response = gl.nondet.web.get(url)
-            page = response.body.decode("utf-8")
+            if response.status != 200:
+                raise gl.vm.UserError(f"Source returned HTTP {response.status}.")
+            page = (response.body or b"").decode("utf-8", errors="replace")
             prompt = f"""
 You are the evidence analyst for TrustGuard.
 
@@ -64,7 +66,10 @@ Return JSON only with exactly these fields:
                 raise gl.vm.UserError("Invalid evidence-analysis response.")
 
             status = str(result.get("status", "INCONCLUSIVE"))
-            score = int(result.get("score", 0))
+            try:
+                score = int(result.get("score") or 0)
+            except (TypeError, ValueError):
+                raise gl.vm.UserError("Invalid verification score.")
             reason = str(result.get("reason", "No reason provided."))[:500]
 
             if status not in ("SUPPORTED", "NOT_SUPPORTED", "INCONCLUSIVE"):

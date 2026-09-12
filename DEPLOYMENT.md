@@ -8,26 +8,15 @@ Network: **GenLayer Testnet Bradbury** (chain ID 4221)
 
 Deployed contract address:
 
-`0x7f8926Bf458C071D271A39F8e165Dc9B737846b0`
+`0x237e6B02d5006A1163E51490e21AD511B62d8439`
 
-Deployer address:
-
-`0x8d3563758C62EAb45cf084D48F5249b0A685Bbf3`
-
-Deployment transaction:
-
-`0x4aed191a8a453408969a4cf945185d1b85e362cd7a5cd40662e1f91294959736`
+> Redeployed on Sep 12, 2026. The previous instance (`0x7f8926Bf458C071D271A39F8e165Dc9B737846b0`) was lost in a Bradbury testnet reset.
 
 ## Verification
 
-Deployment reached GenLayer consensus and finalized successfully.
-
-Transaction result:
-
-- Status: `FINALIZED`
-- Result: `SUCCESS`
-- Result name: `MAJORITY_AGREE`
-- Validators: 5 initial validators, no appeal
+Deployment reached GenLayer consensus and was accepted. A live `verify_claim` call
+(https://www.genlayer.com/ + claim) executed through full validator consensus and
+recorded a result on-chain (total_checks: 1).
 
 Public methods:
 

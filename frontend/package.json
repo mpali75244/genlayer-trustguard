@@ -12,6 +12,7 @@
     "genlayer-js": "1.1.8"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "wrangler": "^3.114.17"
   }
 }
