@@ -8,9 +8,10 @@ Network: **GenLayer Testnet Bradbury** (chain ID 4221)
 
 Deployed contract address:
 
-`0x237e6B02d5006A1163E51490e21AD511B62d8439`
+`0xB2704Cd0814012B882F052546Bd184e06c74C6c8`
 
-> Redeployed on Sep 12, 2026. The previous instance (`0x7f8926Bf458C071D271A39F8e165Dc9B737846b0`) was lost in a Bradbury testnet reset.
+> Redeployed on Sep 12, 2026. Earlier instances (`0x7f8926Bf458C071D271A39F8e165Dc9B737846b0`,
+> `0x237e6B02d5006A1163E51490e21AD511B62d8439`) were lost in a Bradbury testnet reset or superseded.
 
 ## Verification
 

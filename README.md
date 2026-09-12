@@ -6,8 +6,8 @@ TrustGuard is a trust-minimized web-claim verification dApp powered by a GenLaye
 
 - Frontend (Cloudflare Pages): https://trustguard-5yn.pages.dev/
 - Network: GenLayer Testnet Bradbury (chain ID 4221)
-- Contract: `0x237e6B02d5006A1163E51490e21AD511B62d8439`
-- Deployment: redeployed Sep 12, 2026 (previous instance lost in a Bradbury testnet reset)
+- Contract: `0xB2704Cd0814012B882F052546Bd184e06c74C6c8`
+- Deployment: redeployed Sep 12, 2026 (previous instances lost in a Bradbury testnet reset / superseded)
 
 ## The trust problem
 
