@@ -2,6 +2,13 @@
 
 TrustGuard is a trust-minimized web-claim verification dApp powered by a GenLayer Intelligent Contract.
 
+## Live deployment
+
+- Frontend (Cloudflare Pages): https://trustguard-5yn.pages.dev/
+- Network: GenLayer Testnet Bradbury (chain ID 4221)
+- Contract: `0x7f8926Bf458C071D271A39F8e165Dc9B737846b0`
+- Deployment transaction: `0x4aed191a8a453408969a4cf945185d1b85e362cd7a5cd40662e1f91294959736`
+
 ## The trust problem
 
 Important announcements and claims are often copied, paraphrased, or presented without reliable attribution. A conventional smart contract cannot independently inspect live web evidence. TrustGuard moves the core evidence decision into GenLayer so independent validators can verify a leader's result before the state transition is accepted.
@@ -50,7 +57,7 @@ Before the Builder Project resubmission, verify all of the following:
 
 1. TrustGuard is deployed on Testnet Bradbury.
 2. `VITE_TRUSTGUARD_CONTRACT` points to that Bradbury deployment.
-3. The public frontend is deployed to a hosting platform such as Vercel or Cloudflare Pages.
+3. The public frontend is deployed to a hosting platform — Cloudflare Pages at https://trustguard-5yn.pages.dev/.
 4. A browser wallet can switch to/connect to Bradbury.
 5. A real `verify_claim` transaction is submitted from the deployed frontend.
 6. The transaction reaches GenLayer consensus and finishes successfully.
