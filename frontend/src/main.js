@@ -63,6 +63,22 @@ async function ensureBradbury(ethereum) {
   }
 }
 
+function bumpTransactionGas(provider, multiplier = 3n) {
+  return {
+    request: async (args) => {
+      if (args?.method === 'eth_sendTransaction' && args.params?.[0]?.gas) {
+        try {
+          const bumped = '0x' + (BigInt(args.params[0].gas) * multiplier).toString(16);
+          args = { ...args, params: [{ ...args.params[0], gas: bumped }] };
+        } catch (_) {
+          // Keep the original gas when the value cannot be parsed.
+        }
+      }
+      return provider.request(args);
+    },
+  };
+}
+
 async function getWalletAccount(ethereum) {
   const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
   if (!accounts?.[0]) throw new Error('No wallet account was returned.');
